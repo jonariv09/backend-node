@@ -29,4 +29,16 @@ router.post('/', function (req, res) {
 
 })
 
+router.patch('/:id', function(req, res) {
+  
+  controller.updateMessage(req.params.id, req.body.message)
+    .then(() => {
+      response.success(req, res, 'Actualizado correctamente', 200)
+    })
+    .catch(err => {
+      response.error(req, res, 'Fallo la actualizacion del mensaje', 500, e)
+    })
+})
+
+
 module.exports = router;
