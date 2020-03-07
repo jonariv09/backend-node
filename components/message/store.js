@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Message = require('./model')
 const ObjectId = mongoose.Types.ObjectId
 let dbo = null;
 
@@ -22,8 +23,16 @@ async function addMessage(fullMessage) {
   await dbo.collection('Message').insertOne(newMessage)
 }
 
-function getMessages() {
-  return dbo.collection('Message').find()
+function getMessages(filterUser) {
+  return filterUser == null ? 
+  dbo.collection('Message').find()
+    .toArray()
+    .then(data => {
+      if(data)
+        return data;
+    })
+    :
+    dbo.collection('Message').find({ user: { $eq: filterUser } })
     .toArray()
     .then(data => {
       if(data)

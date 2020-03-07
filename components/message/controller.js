@@ -19,9 +19,10 @@ function addMessage(user, message) {
   })
 }
 
-async function getMessages() {
+async function getMessages(filterUser) {
+
   return new Promise((resolve, reject) => {
-    resolve(store.list())
+    resolve(store.list(filterUser))
   })
 }
 
@@ -31,7 +32,7 @@ function updateMessage(id, message) {
       reject('Invalid data')
       return false
     }
-    
+
     await store.updateText(id, message)
     resolve(null)
   })

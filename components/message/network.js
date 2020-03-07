@@ -7,7 +7,8 @@ const controller = require('./controller')
 const response = require('./../../network/response')
 
 router.get('/', function (req, res) {
-  controller.getMessages()
+  let filterUser = req.query.user || null
+  controller.getMessages(filterUser)
     .then((messageList) => {
       response.success(req, res, messageList, 200)
     })
@@ -17,7 +18,6 @@ router.get('/', function (req, res) {
 })
 
 router.post('/', function (req, res) {
-
   controller.addMessage(req.body.user, req.body.message)
     .then(() => {
       response.success(req, res, 'Creado correctamente', 201)
@@ -26,7 +26,6 @@ router.post('/', function (req, res) {
       console.error(e)
       response.error(req, res, 'Informacion invalida', 400)
     })
-
 })
 
 router.patch('/:id', function(req, res) {
