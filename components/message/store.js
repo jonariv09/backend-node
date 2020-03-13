@@ -3,8 +3,14 @@ const Message = require('./model')
 const ObjectId = mongoose.Types.ObjectId
 let dbo = null;
 
+const {
+  DB_USER,
+  DB_PASS,
+  DB_URI
+} = process.env
+
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb+srv://jonariv09:jose123@cluster0-gnh6z.mongodb.net/test?retryWrites=true&w=majority', {
+mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASS}@${DB_URI}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: 'telegrom'
@@ -29,14 +35,14 @@ function getMessages(filterUser) {
     .toArray()
     .then(data => {
       if(data)
-        return data;
+        return data
     })
     :
     dbo.collection('Message').find({ user: { $eq: filterUser } })
     .toArray()
     .then(data => {
       if(data)
-        return data;
+        return data
     })
 }
 
