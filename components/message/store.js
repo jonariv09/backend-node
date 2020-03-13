@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 const Message = require('./model')
 const ObjectId = mongoose.Types.ObjectId
 let dbo = null;
@@ -58,9 +59,13 @@ async function updateText(id, message) {
 
 }
 
+function removeMessage(id) {
+  return dbo.collection('Message').deleteOne({ _id: ObjectId(id) })
+}
+
 module.exports = {
   add: addMessage,
   list: getMessages,
   updateText: updateText,
-  // delete
+  remove: removeMessage
 }
