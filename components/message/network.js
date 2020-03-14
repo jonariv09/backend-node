@@ -31,8 +31,8 @@ router.post('/', function (req, res) {
     })
 })
 
-router.patch('/:id', function(req, res) {
-  
+router.patch('/:id', function (req, res) {
+
   controller.updateMessage(req.params.id, req.body.message)
     .then(() => {
       response.success(req, res, 'Actualizado correctamente', 200)
@@ -52,5 +52,4 @@ router.delete('/:id', function (req, res) {
     })
 })
 
-
-module.exports = router;
+module.exports = router

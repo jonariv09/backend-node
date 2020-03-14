@@ -1,8 +1,7 @@
 const mongoose = require('mongoose')
-require('dotenv').config()
 const ObjectId = mongoose.Types.ObjectId
-let dbo = null;
-let result = null;
+require('dotenv').config()
+let Connection = null
 
 const {
   DB_USER,
@@ -10,10 +9,9 @@ const {
   DB_URI
 } = process.env
 
-
 async function connection() {
   mongoose.Promise = global.Promise
-  result = await mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASS}@${DB_URI}`, {
+  Connection = await mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASS}@${DB_URI}`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     dbName: 'telegrom'
@@ -27,7 +25,7 @@ async function connection() {
   })
     .catch(e => console.log(e))
 
-  return result.connections[0]
+  return Connection.connections[0]
 }
-  
+
 module.exports = { connection, ObjectId }

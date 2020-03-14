@@ -1,11 +1,9 @@
 const { connection, ObjectId } = require('../../db')
 const Message = require('./model')
-
 let dbo = null
+
 connection()
-  .then(conn => {
-    dbo = conn
-  })
+  .then(conn => dbo = conn)
 
 async function addMessage(fullMessage) {
   const newMessage = new Message(fullMessage)
@@ -13,15 +11,9 @@ async function addMessage(fullMessage) {
 }
 
 function getMessages(filterUser) {
-  return filterUser == null ?
-  dbo.collection('Message').find()
-    .toArray()
-    .then(data => {
-      if(data)
-        return data
-    })
-    :
-    dbo.collection('Message').find({ user: { $eq: filterUser } })
+  const query = filterUser ? { user: { $eq: filterUser } } : {  }
+  
+  return dbo.collection('Message').find(query)
     .toArray()
     .then(data => {
       if(data)
