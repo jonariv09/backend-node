@@ -17,6 +17,9 @@ router.get('/', function (req, res) {
     })
 })
 
+router.get('/:id', function (req, res) {
+})
+
 router.post('/', function (req, res) {
   controller.addMessage(req.body.user, req.body.message)
     .then(() => {

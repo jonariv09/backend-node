@@ -20,7 +20,7 @@ function addMessage(user, message) {
 }
 
 async function getMessages(filterUser) {
-
+  
   return new Promise((resolve, reject) => {
     resolve(store.list(filterUser))
   })
@@ -43,7 +43,7 @@ function deleteMessage(id) {
     if(!id) {
       reject('Id invalido')
     }
-
+    
     store.remove(id)
       .then(() => {
         resolve()

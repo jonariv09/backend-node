@@ -1,29 +1,11 @@
-const mongoose = require('mongoose')
-require('dotenv').config()
+const { connection, ObjectId } = require('../../db')
 const Message = require('./model')
-const ObjectId = mongoose.Types.ObjectId
-let dbo = null;
 
-const {
-  DB_USER,
-  DB_PASS,
-  DB_URI
-} = process.env
-
-mongoose.Promise = global.Promise
-mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASS}@${DB_URI}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  dbName: 'telegrom'
-}, function(error, db) {
-  if(error) {
-    throw error
-  } else {
-    dbo = db
-    console.log('[db] conectada con exito')
-  }
-})
-.catch(e => console.log(e))
+let dbo = null
+connection()
+  .then(conn => {
+    dbo = conn
+  })
 
 async function addMessage(fullMessage) {
   const newMessage = new Message(fullMessage)
@@ -31,7 +13,7 @@ async function addMessage(fullMessage) {
 }
 
 function getMessages(filterUser) {
-  return filterUser == null ? 
+  return filterUser == null ?
   dbo.collection('Message').find()
     .toArray()
     .then(data => {
@@ -48,7 +30,6 @@ function getMessages(filterUser) {
 }
 
 async function updateText(id, message) {
-
   return await dbo.collection('Message').updateOne(
     { _id: ObjectId(id) }, // filter
     { $set: { message: message } }, // update
@@ -56,7 +37,6 @@ async function updateText(id, message) {
       if(err)
         throw err
     })
-
 }
 
 function removeMessage(id) {
